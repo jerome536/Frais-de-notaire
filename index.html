@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur de frais de notaire en Polynésie française</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculateur de frais de notaire en Polynésie française</h1>
+        <form id="notaryForm">
+            <label for="propertyValue">Valeur du bien (en XPF) :</label>
+            <input type="number" id="propertyValue" required>
+            <button type="submit">Calculer</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('notaryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const propertyValue = parseFloat(document.getElementById('propertyValue').value);
+            
+            // Calcul des frais de notaire (approximatif)
+            const emolumentsFixe = 55000; // XPF
+            let emolumentsProportionnels = 0;
+            
+            if (propertyValue <= 5000000) {
+                emolumentsProportionnels = propertyValue * 0.04;
+            } else if (propertyValue <= 20000000) {
+                emolumentsProportionnels = 5000000 * 0.04 + (propertyValue - 5000000) * 0.02;
+            } else if (propertyValue <= 50000000) {
+                emolumentsProportionnels = 5000000 * 0.04 + 15000000 * 0.02 + (propertyValue - 20000000) * 0.01;
+            } else {
+                emolumentsProportionnels = 5000000 * 0.04 + 15000000 * 0.02 + 30000000 * 0.01 + (propertyValue - 50000000) * 0.005;
+            }
+            
+            const droitsEnregistrement = propertyValue * 0.10; // Correction : 10% au lieu de 1%
+            const fraisPublicite = 20000; // XPF (approximatif)
+            
+            const totalFees = emolumentsFixe + emolumentsProportionnels + droitsEnregistrement + fraisPublicite;
+            
+            document.getElementById('result').innerHTML = `
+                Frais de notaire estimés : ${totalFees.toLocaleString('fr-PF')} XPF<br>
+                Détail :<br>
+                - Émoluments fixes : ${emolumentsFixe.toLocaleString('fr-PF')} XPF<br>
+                - Émoluments proportionnels : ${emolumentsProportionnels.toLocaleString('fr-PF')} XPF<br>
+                - Droits d'enregistrement (10%) : ${droitsEnregistrement.toLocaleString('fr-PF')} XPF<br>
+                - Frais de publicité foncière : ${fraisPublicite.toLocaleString('fr-PF')} XPF
+            `;
+        });
+    </script>
+</body>
+</html>
